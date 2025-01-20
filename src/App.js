@@ -1,26 +1,31 @@
-import logo from './logo.svg';
+import {BrowserRouter, Route, Routes} from 'react-router';
+import About from './components/pages/About';
+import Home from './components/pages/Home';
+import NotFound from "./components/pages/NotFound";
+import Header from "./components/shared/Header";
 import './App.scss';
+import IndividualMovie from "./components/pages/IndividualMovie";
+import History from "./components/pages/History";
+import Movements from "./components/pages/Movements";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo"/>
-        <p>
-          Hola y bienvenidos a React! >:D
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-
-        <button type="button" className="btn btn-primary">Primary</button>
+    <BrowserRouter>
+      <header>
+        <Header/>
       </header>
-    </div>
+
+      <main className="p-5">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/history" element={<History />} />
+          <Route path="/individual" element={<IndividualMovie />} />
+          <Route path="/movements" element={<Movements />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+    </BrowserRouter>
   );
 }
 

@@ -1,41 +1,54 @@
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
-.App {
-  text-align: center;
+body {
+  background: #131317;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+h1, h2, h3, h4, h5, h6, p, hr {
   color: white;
 }
-
-.App-link {
-  color: #61dafb;
+/* HEADER SCSS */
+.header__link:hover {
+  color: #018990 !important;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* CAROUSEL SCSS */
+.carousel .carousel-item img {
+  object-fit: contain;
+  max-height: 60vh;
+  width: 100%;
+}
+/* CARD */
+.card__body__container-image {
+  height: 50vh;
+  width: 90%;
+}
+.card__body {
+  background: #018990;
+}
+/* INDIVIDUAL CARD */
+.individual__container__row__col-image {
+  height: 30vh;
+  width: auto;
+}
+.individual__container__row__col-information {
+  border: white 1px solid;
+  border-radius: 8px;
+}
+/* MOVEMENT FORM */
+.form__fields-label {
+  color: white;
+}
+/* HISTORY */
+.history__table-row:hover {
+  cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
+}
+/* ABOUT */
+.about__list>li {
+  color: white;
+}
+/* NOT FOUND */
+.not-found-img{
+  height: 40vh;
+  width: auto;
+  border: 10px dashed #018990;
 }

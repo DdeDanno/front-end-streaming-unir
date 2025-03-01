@@ -6,6 +6,7 @@ import axios from "axios";
 function Home() {
     const API_URL = process.env.REACT_APP_API_URL;
     const [movies, setMovies] = useState([]);
+    const [suggestions, setSuggestions] = useState([]); // Estado para almacenar las sugerencias
     const [query, setQuery] = useState({
         name: "",
         director: "",
@@ -13,6 +14,7 @@ function Home() {
         genre: "",
     });
 
+    // Maneja el cambio en los inputs
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setQuery((prevQuery) => ({
@@ -21,29 +23,67 @@ function Home() {
         }));
     };
 
-    const handleFilter = async () => {
-        try {
-            const response = await axios.get(`${API_URL}/search-microservice/elastic/movies`, {
-                params: query,
-            });
-            setMovies(response.data);
-        } catch (error) {
-            console.error("Error fetching movies with filters:", error);
-        }
-    };
-
-    // Fetch movies on initial load
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                const response = await axios.get(`${API_URL}/search-microservice/elastic/movies`);
+                const response = await axios.get(`${API_URL}/search-microservice/elastic/movies`); // Asegúrate de que la ruta sea la correcta
                 setMovies(response.data);
+                console.log(response.data);
             } catch (error) {
                 console.error("Error fetching movies:", error);
             }
         };
+
         fetchMovies();
     }, [API_URL]);
+
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            let queryString = "";
+
+            if (query.director) {
+                queryString = `director?query=${query.director}`;
+            }
+            else if (query.name) {
+                queryString = `name?query=${query.name}`;
+            }
+
+            if (queryString) {
+                try {
+                    const response = await axios.get(`${API_URL}/search-microservice/elastic/movies/${queryString}`);
+                    setSuggestions(response.data);
+                    console.log(response.data);
+                } catch (error) {
+                    console.error("Error fetching suggestions:", error);
+                }
+            } else {
+                setSuggestions([]);
+            }
+        };
+
+        if (query.director || query.name) {
+            fetchSuggestions();
+        } else {
+            setSuggestions([]);
+        }
+    }, [query.director, query.name, API_URL]);
+
+    const handleFilter = async () => {
+        try {
+            const { genre, yearOfPublication } = query;
+            let url = `${API_URL}/search-microservice/elastic/movies?`;
+
+            if (genre) url += `genre=${genre}&`;
+            if (yearOfPublication) url += `yearOfPublication=${yearOfPublication}&`;
+
+            const response = await axios.get(url);
+            setMovies(response.data);
+            console.log(response.data);
+
+        } catch (error) {
+            console.error("Error fetching movies with filters:", error);
+        }
+    };
 
     return (
         <div className="home p-3">
@@ -83,15 +123,43 @@ function Home() {
                     />
 
                     <button
-                        className="btn btn-primary w-100"
+                        className="btn btn-primary w-100 mt-3"
                         onClick={handleFilter}
                     >
                         Filtrar
                     </button>
                 </div>
             </div>
+            <h3>¿No encuentras lo que buscas? Prueba nuestra búsqueda predictiva</h3>
 
-            <h3>¿No encuentras lo que buscas?</h3>
+            <div className="home__filters mt-4">
+                <input
+                    type="text"
+                    className="form-control mb-3"
+                    placeholder="Filtrar por nombre..."
+                    name="name"
+                    value={query.name}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="text"
+                    className="form-control mb-3"
+                    placeholder="Filtrar por director..."
+                    name="director"
+                    value={query.director}
+                    onChange={handleInputChange}
+                />
+            </div>
+            {suggestions.length > 0 && (
+                <div className="home__suggestions mt-4">
+                    <h4>Quizá quieres buscar...</h4>
+                    <ul>
+                        {suggestions.map((suggestion, index) => (
+                            <li key={index} className="text-white">{suggestion}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
 
             <div className="home__cards pt-5">
                 <div className="home__cards__container container">

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
-function MovementForm({ movementType, price }) {
+function MovementForm({ movementType, price, movieId }) {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -26,14 +26,15 @@ function MovementForm({ movementType, price }) {
         event.preventDefault();
 
         const information = {
-            name,
-            email,
-            phone,
-            address,
-            rentalTime: movementType === 'Renta' ? rentalTime : 'N/A',
-            acceptedTerms,
-            finalPrice,
+            userName: name,
+            email: email,
+            phone: phone,
+            nationality: address,
+            operationType: movementType.toLowerCase(),
+            price: parseFloat(finalPrice),
+            movieId: movieId,
         };
+        console.log(information);
 
         try {
             const response = await axios.post(`${API_URL}/operator-microservice/operation`, information, {
@@ -42,7 +43,7 @@ function MovementForm({ movementType, price }) {
                 }
             });
 
-            if (response.status === 200) {
+            if (response.status === 201) {
                 alert('Compra realizada con éxito!');
             } else {
                 alert('Hubo un error al realizar la compra. Inténtalo de nuevo.');

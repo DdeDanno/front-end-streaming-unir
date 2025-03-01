@@ -9,6 +9,7 @@ function Movements() {
     const { movieMovement, movementType } = location.state || {};
 
     const price = movementType === "Renta" ? movieMovement.rentPrice : movieMovement.buyPrice;
+    const movieId = movieMovement.id;
 
     return (
         <div className="movements container-fluid">
@@ -28,6 +29,7 @@ function Movements() {
                         className="movements__row__form-movementform"
                         movementType={movementType}
                         price={price}
+                        movieId={movieId}
                     />
                 </div>
             </div>

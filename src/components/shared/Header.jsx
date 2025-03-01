@@ -15,6 +15,9 @@ function Header() {
             <li className="header__item nav-item">
               <Link to="/history" className="header__link nav-link active"> Registro de clientes satisfechos </Link>
             </li>
+            <li className="header__item nav-item">
+              <Link to="/admin" className="header__link nav-link active"> Admin </Link>
+            </li>
           </ul>
         </div>
       </div>

@@ -1,14 +1,22 @@
 import CarouselMovies from "../shared/CarouselMovies";
 import { useEffect, useState } from "react";
-import { getMovies } from "../../api/dbUtils";
+import axios from "axios";
 
 function About() {
-  const [movies, setMovies] = useState([]);
+    const API_URL = process.env.REACT_APP_API_URL;
+    const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-    const fetchedMovies = getMovies();
-    setMovies(fetchedMovies);
-  }, []);
+    useEffect(() => {
+        const fetchMovies = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/search-microservice/elastic/movies`);
+                setMovies(response.data);
+            } catch (error) {
+                console.error("Error fetching movies:", error);
+            }
+        };
+        if (API_URL) fetchMovies();
+    }, [API_URL]);
 
   return (
     <div className="about">

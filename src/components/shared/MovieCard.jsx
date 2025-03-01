@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import {Link} from "react-router";
 
 function MovieCard ({movie, state}) {
+    console.log(movie)
   return (
     <Card className="card h-100">
       <Card.Body className="card__body">

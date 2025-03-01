@@ -7,6 +7,8 @@ import './App.scss';
 import IndividualMovie from "./components/pages/IndividualMovie";
 import History from "./components/pages/History";
 import Movements from "./components/pages/Movements";
+import Admin from "./components/pages/Admin";
+import CreateOrEdit from "./components/pages/CreateOrEdit";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/history" element={<History />} />
           <Route path="/individual" element={<IndividualMovie />} />
           <Route path="/movements" element={<Movements />} />
+           <Route path="/admin" element={<Admin />} />
+            <Route path="/editMovie" element={<CreateOrEdit />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
